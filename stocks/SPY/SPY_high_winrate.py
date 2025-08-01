@@ -8,8 +8,8 @@ class HighWinRateSPYAlgorithm(QCAlgorithm):
         self.SetStartDate(2020, 1, 1)
         self.SetEndDate(2024, 12, 31)
         
-        # Set initial cash
-        self.SetCash(100000)
+        # Set initial cash - optimized for smaller account
+        self.SetCash(6319)  # Your current capital
         
         # Add SPY with minute resolution for better entry/exit timing
         self.spy = self.AddEquity("SPY", Resolution.Minute).Symbol
@@ -20,10 +20,15 @@ class HighWinRateSPYAlgorithm(QCAlgorithm):
         # Initialize indicators
         self.Setup_Indicators()
         
-        # Risk management parameters
-        self.max_position_size = 0.95  # Maximum 95% of portfolio
-        self.stop_loss_pct = 0.015     # 1.5% stop loss
-        self.take_profit_pct = 0.025   # 2.5% take profit (higher than stop for positive R:R)
+        # Risk management parameters (optimized for small account)
+        self.max_position_size = 0.85       # 85% max position for small account
+        self.stop_loss_pct = 0.018           # 1.8% stop loss (tighter control)
+        self.take_profit_pct = 0.03          # 3% take profit (achievable target)
+        
+        # Small account optimizations
+        self.min_trade_value = 400           # Minimum $400 per trade (lower for SPY)
+        self.max_trades_per_day = 3          # Limit daily trades
+        self.daily_trade_count = 0
         
         # Trade management
         self.entry_price = 0
