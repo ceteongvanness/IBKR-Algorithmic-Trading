@@ -8,8 +8,8 @@ class HighWinRateKOStockAlgorithm(QCAlgorithm):
         self.SetStartDate(2020, 1, 1)
         self.SetEndDate(2024, 12, 31)
         
-        # Set initial cash
-        self.SetCash(100000)
+        # Set initial cash - optimized for smaller account
+        self.SetCash(6319)  # Your current capital
         
         # Add KO (Coca-Cola) with minute resolution
         self.ko = self.AddEquity("KO", Resolution.Minute).Symbol
@@ -20,10 +20,15 @@ class HighWinRateKOStockAlgorithm(QCAlgorithm):
         # Initialize indicators
         self.Setup_Indicators()
         
-        # Risk management parameters (adjusted for KO's lower volatility)
-        self.max_position_size = 0.95    # Maximum 95% of portfolio
-        self.stop_loss_pct = 0.025       # 2.5% stop loss (wider for less volatile stock)
-        self.take_profit_pct = 0.04      # 4% take profit (higher reward target)
+        # Risk management parameters (optimized for small account)
+        self.max_position_size = 0.80       # 80% max position (conservative for dividend stock)
+        self.stop_loss_pct = 0.025           # 2.5% stop loss 
+        self.take_profit_pct = 0.045         # 4.5% take profit (higher for KO's lower volatility)
+        
+        # Small account optimizations for KO
+        self.min_trade_value = 300           # Minimum $300 per trade (KO lower price)
+        self.max_trades_per_day = 2          # Conservative trade limit
+        self.daily_trade_count = 0
         
         # Trade management
         self.entry_price = 0
